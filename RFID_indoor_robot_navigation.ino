@@ -181,9 +181,12 @@ int targetcol = 0; //location for the robot to go to
 int row;
 int col;
 
+#define ROWS 3
+#define COLS 5
+
 //Map
 //My Gird is 3 x 5 (0,0 to 2,4) - I am using the "Checksum" of the RFID tags
-int codes[3][5] = {
+int codes[ROWS][COLS] = {
   {67,121,127,117,107},
   {137,147,157,103,97},
   {143,133,187,177,183},
@@ -352,16 +355,16 @@ void findnumbers(int findnumber) {
    */
    
 int a, b;
-  for (a = 0; a < 3; a++) {
-    for (b = 0; b < 5; b++) {
+  for (a = 0; a < ROWS; a++) {
+    for (b = 0; b < COLS; b++) {
       if (findnumber == codes[a][b]) {
         row = a;
         col = b;}
       }
   }
-  Serial.print(row);
+  /*Serial.print(row);
   Serial.print(",");
-  Serial.println(col);
+  Serial.println(col);*/
 }
 
 void calculatemove() {
@@ -376,16 +379,16 @@ moveDirection = 0;
 
   if (targetrow > row) {
     Serial.write(12);
-    Serial.print("Move down ");
-    Serial.print(targetrow - row);
-    Serial.println(" rows.");
+    Serial.print("DOWN ");
+    //Serial.print(targetrow - row);
+    //Serial.println(" rows.");
     moveDirection = 3;
       }
   if (targetrow < row) {
     Serial.write(12);
-    Serial.print("Move up ");
-    Serial.print (row - targetrow);
-    Serial.println(" rows.");
+    Serial.print("UP ");
+    //Serial.print (row - targetrow);
+    //Serial.println(" rows.");
     moveDirection = 1;
   }
   /*if (targetrow == row) {
@@ -393,15 +396,15 @@ moveDirection = 0;
   }*/
   if (targetcol > col) {
     Serial.write(12);
-    Serial.print("Move Right: ");
-    Serial.print(targetcol - col);
+    Serial.print("Right ");
+    //Serial.print(targetcol - col);
     //Serial.println(" columns to the right");
     moveDirection = 2;
   }
   if (targetcol < col) {
     Serial.write(12);
-    Serial.print("Move left: ");
-    Serial.print(col - targetcol);
+    Serial.print("Left ");
+    //Serial.print(col - targetcol);
     //Serial.println(" columns to the left.");
     moveDirection = 4;
   }
