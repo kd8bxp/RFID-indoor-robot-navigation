@@ -229,7 +229,11 @@ void setup() {
  Serial.write(17); //backlight ON
   MFRC522_Init(); 
 
-  Serial.println(target);
+  //Serial.println(target);
+  Serial.print("BittyBot RFID");
+  Serial.write(13);
+  Serial.print("Indoor Location");
+  delay(1000);
   
   while(checksum1<=0) {
     readRFID(); 
@@ -242,6 +246,7 @@ void setup() {
   Serial.print("Grid: ");
   findnumbers(start);
   bot.Speed(leftspeed, rightspeed);
+  selfOrientation();
 }
 
 void loop() {
@@ -346,6 +351,37 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   }
   //bot.stop();
   findnumbers(checksum1);
+}
+
+void selfOrientation() {
+
+int tempRow = row;
+int tempCol = col;
+
+if (col = 0 && row = 0) {
+      //error out location 0,0 is a corner
+    }
+if (row = 0 && col = COLS-1) {
+      //error out location is a corner
+    }
+if (col = COLS-1 && row = ROWS-1) {
+  //error out location is a corner
+}
+if (col = 0 && rows = ROWS-1) {
+  //error out location is a corner
+}
+  if (row > 0 && col != 0) {
+    //not on top row or in first column
+      }
+  if (col > 0 && row != 0) {
+    //not on 1st column
+  }
+  if (row < ROWS-1) {
+    //not on last row
+  }
+  if (col < COLS-1) {
+    //not on last column
+  }
 }
 
 void findnumbers(int findnumber) {
