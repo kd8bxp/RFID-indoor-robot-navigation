@@ -354,7 +354,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
 }
 
 void selfOrientation() {
-
+/*
 int tempRow = row;
 int tempCol = col;
 
@@ -382,6 +382,7 @@ if (col = 0 && rows = ROWS-1) {
   if (col < COLS-1) {
     //not on last column
   }
+  */
 }
 
 void findnumbers(int findnumber) {
