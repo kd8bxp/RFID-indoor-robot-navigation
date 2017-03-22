@@ -19,9 +19,10 @@
 
 #include <SPI.h>
 #include "BittyBot2.h"
+#include "Keypad.h"
 
  //RFID Setup
- #define  uchar unsigned char
+#define  uchar unsigned char
 #define uint  unsigned int
 
 //Maximum length of the array
@@ -164,10 +165,6 @@ uchar  moneyAdd = 10 ;  //Recharge 10 yuan
 //RFID setup end
 
 int start; //RFID starting location
-//We want the robot to move to RFID #67 which is at location 0,0
-int targetrow = 0; //Location for the robot to go to
-int targetcol = 0; //location for the robot to go to
-
 
 /* We could use the RFID tag code to set a location as well
  * See https://github.com/automation-technology-club/NFC-indoor-location-Mockup
@@ -192,7 +189,7 @@ int codes[ROWS][COLS] = {
   {143,133,187,177,183},
 };  //Map of NFC codes 67 is location 0,0 183 is location 2,4
 
-int target = codes[targetrow][targetcol]; 
+int target; 
 
 /*New function to turn robot about 90 degrees - it's not perfect
  * turnleft() - left about 90 degrees
@@ -218,6 +215,24 @@ int faceDirection = 1; //1= UP, 2= right, 3=down, 4=left
 int moveDirection; //used for calculating move
 int moveflag = 0;
 
+//Setup 3x4 matrix keypad for target location entry.
+const byte keyROWS = 4; // number of rows
+const byte keyCOLS = 3; // number of columns
+char keys[keyROWS][keyCOLS] = {
+{'1','2','3'},
+{'4','5','6'},
+{'7','8','9'},
+{'*','0','#'}
+};
+
+byte rowPins[keyROWS] = {49,47,45,43};
+byte colPins[keyCOLS] = {41,39,37};
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, keyROWS, keyCOLS);
+
+int targetrow = -999;
+int targetcol = -999;
+char key;
+
 void setup() {
   Serial.begin(9600);
   SPI.begin();
@@ -233,6 +248,28 @@ void setup() {
   Serial.print("BittyBot RFID");
   Serial.write(13);
   Serial.print("Indoor Location");
+  delay(1000);
+
+//Enter Target Location on keypad
+while (targetrow < 0 || targetrow > ROWS) {
+  Serial.write(12);
+  Serial.print("Row? ");
+  targetrow = inputTarget();
+  if (targetrow > ROWS) {Serial.println("Out of Bounds");}
+ }
+ while (targetcol < 0 || targetcol > COLS) {
+  Serial.write(12);
+  Serial.print("Col? ");
+  targetcol = inputTarget();
+  if (targetcol > COLS) {Serial.println("Out of Bounds");}
+ }
+
+target = codes[targetrow][targetcol];
+ Serial.write(12);
+  Serial.print("Target: ");
+  Serial.print(targetrow);
+  Serial.print(",");
+  Serial.println(targetcol);
   delay(1000);
   
   while(checksum1<=0) {
@@ -352,6 +389,19 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   //bot.stop();
   findnumbers(checksum1);
 }
+
+int inputTarget() {
+
+key=0;
+ while(!key)  // Check for a valid key.
+  {
+    key = keypad.getKey();
+  }
+     Serial.print(" ");
+     Serial.println(key);
+        if (key-48>=17) {return (key-55);} else { return(key-48);}
+        
+    }
 
 void selfOrientation() {
 /*
