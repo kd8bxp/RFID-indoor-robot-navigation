@@ -211,7 +211,7 @@ BittyBot bot(44,46,36,38,40,42); //Left Enable, Right Enable, Pin1 for Left, Pin
  */
 
 //FaceDirection is used by the robot to track where it's front is facing and how it needs to turn
-int faceDirection = 1; //1= UP, 2= right, 3=down, 4=left
+int faceDirection = -999; //1= UP, 2= right, 3=down, 4=left
 int moveDirection; //used for calculating move
 int moveflag = 0;
 
@@ -251,13 +251,13 @@ void setup() {
   delay(1000);
 
 //Enter Target Location on keypad
-while (targetrow < 0 || targetrow > ROWS) {
+while (targetrow < 0 || targetrow > ROWS-1) {
   Serial.write(12);
   Serial.print("Row? ");
   targetrow = inputTarget();
   if (targetrow > ROWS) {Serial.println("Out of Bounds");}
  }
- while (targetcol < 0 || targetcol > COLS) {
+ while (targetcol < 0 || targetcol > COLS-1) {
   Serial.write(12);
   Serial.print("Col? ");
   targetcol = inputTarget();
@@ -270,7 +270,30 @@ target = codes[targetrow][targetcol];
   Serial.print(targetrow);
   Serial.print(",");
   Serial.println(targetcol);
+
+  while (faceDirection < 1 || faceDirection > 4) {
+Serial.write(12);
+Serial.print("1=U,2=R,3=L,4=D");
+Serial.write(13);
+Serial.print("Facing? ");
+faceDirection = inputTarget(); //1= UP, 2= right, 3=down, 4=left
+  if (faceDirection > COLS) {Serial.write(12); Serial.println("Out of Bounds");}
+  }
+
+  Serial.write(12);
+  Serial.print("Start..");
+  Serial.print("5..");
   delay(1000);
+  Serial.print("4..");
+  delay(1000);
+  Serial.print("3..");
+  delay(1000);
+  Serial.print("2..");
+  delay(1000);
+  Serial.print("1..");
+  delay(1000);
+  Serial.write(12);
+  Serial.print("Go Robot Go!");
   
   while(checksum1<=0) {
     readRFID(); 
