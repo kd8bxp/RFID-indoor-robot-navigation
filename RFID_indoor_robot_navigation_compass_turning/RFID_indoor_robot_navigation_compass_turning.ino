@@ -18,8 +18,8 @@
  */
 
 #include <SPI.h>
-#include "BittyBot2.h"
-#include "Keypad.h"
+#include "src/BittyBot2/BittyBot2.h"
+#include "src/Keypad/Keypad.h"
 #include <Wire.h>
 #include "compass.h"
 

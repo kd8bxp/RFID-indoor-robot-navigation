@@ -7,6 +7,10 @@ You need a MFC522 reader, and some tags
 Tested on a Arduino MEGA 2560 (may work with a UNO)
 I'll be documenting this project in a few days on instructables
 
+## Libraries
+
+Because the Arduino IDE has been getting pretty bad handling libraries, I've included the libraries used in the src directory of the sketch. These libraries may have been slightly modified to work from the sketch directory, and do not include the examples.  
+
 ## Things To Do
 
 Still a work in progress would like to:

@@ -18,8 +18,8 @@
  */
 
 #include <SPI.h>
-#include "BittyBot2.h"
-#include "Keypad.h"
+#include "src/BittyBot2/BittyBot2.h"
+#include "src/Keypad/Keypad.h"
 
  //RFID Setup
 #define  uchar unsigned char
